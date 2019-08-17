@@ -13,6 +13,11 @@ class Login extends Controller
         $post = $this->request->param();
         //手机号登陆
         if (!empty($post['mobile'])) {
+
+            if(!preg_match('/^1([0-9]{9})/',$post['mobile'])) {
+                return   toJson('500', '请输入有效账号');
+            }
+
             if($post['password'] == ''){
                 return toJson('500',  '请输入密码');
             }

@@ -1,5 +1,5 @@
-DROP TABLE if EXISTS `ti_category` ;
-CREATE TABLE `ti_category` (
+DROP TABLE if EXISTS `tj_category` ;
+CREATE TABLE `tj_category` (
    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
    `cat_name` VARCHAR(20) NOT NULL COMMENT '分类名称',
    `pid` int(10) unsigned DEFAULT 0 ,

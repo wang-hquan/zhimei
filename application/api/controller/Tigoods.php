@@ -86,7 +86,7 @@ class Tigoods extends Controller
     //商品分类接口
     public function category()
     {
-        $cat_arr =   Db::table('ti_category')
+        $cat_arr =   Db::table('tj_category')
             ->where('status',1)
             ->select();
         return toJson('200','成功',$cat_arr);

@@ -7,7 +7,7 @@ CREATE TABLE `user` (
   `head_img` varchar(100) COMMENT '头像',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
   `token` varchar(50) DEFAULT NULL COMMENT 'token',
-  `sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '性别',
+  `sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '性别 1男 0 女',
   `weight` varchar(20) NOT NULL DEFAULT '0' COMMENT '体重',
   `openid`   varchar(30) NOT NULL DEFAULT '0' COMMENT '微信openid',
   `nickname` varchar(50) NULL COMMENT '微信昵称',
