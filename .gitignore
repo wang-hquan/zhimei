@@ -3,5 +3,6 @@
 /vendor
 *.log
 #thinkphp
+/public/img
 .env
 .DS_Store
