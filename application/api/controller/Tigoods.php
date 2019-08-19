@@ -4,6 +4,7 @@ namespace app\api\controller;
 
 use think\Controller;
 use think\Db;
+use think\db\Query;
 
 class Tigoods extends Controller
 {
@@ -92,11 +93,64 @@ class Tigoods extends Controller
         return toJson('200','成功',$cat_arr);
     }
 
+    //商品详情页
+    public function goods()
+    {
+        $goods_id  =  $this->request->param( 'goods_id' );
+        $data = Db::table('tj_goods')->where('id',$goods_id)
+            ->field('id,goods_name,type,img,goods_price,goods_brief,goods_item,goods_matters,goods_desc')
+            ->find();
+
+        $param = [
+            'id' => $data['id'],
+            'goods_name' => $data['goods_name'],
+            'type' => $data['type'],
+            'img' => explode('--',$data['img']),
+            'goods_price' => $data['goods_price'],
+            'goods_brief' => $data['goods_brief'],
+            'goods_item' =>  explode('--',$data['goods_item']),
+            'goods_matters' => explode('--',$data['goods_matters']),
+            'goods_desc' => $data['goods_desc'],
+        ];
+//        $data['goods_item'] = explode('--',$data['goods_item']);
+//        $data['img'] = explode('--',$data['img']);
+//        $data['goods_matters'] = explode('--',$data['goods_matters']);
+//        return toJson('200','查询成功', $data);
+        return toJson('200','查询成功', $param);
+    }
+
     //搜索
     public function search()
     {
         $key = $this->request->param('key');
-        $goods_arr =     Db::table('tj_goods')->where('goods_name','like','%'.$key.'%')->select();
-        print_r($goods_arr);exit;
+        $goods_arr = Db::table('tj_goods')->where('goods_name','like','%'.$key.'%')->select();
+        foreach ($goods_arr as $k => &$v) {
+            $v['img'] = explode('--', $v['img']);
+            $v['goods_item'] = explode('--', $v['goods_item']);
+            $v['goods_matters'] = explode('--', $v['goods_matters']);
+        }
+        return toJson('200','查询成功', $goods_arr);
     }
+
+    //猜你想看
+    public function guess_goods()
+    {
+        try{
+            $post = $this->request->param();
+            $type = $post['type'];
+            $sql  =   'SELECT id,goods_name,type,img,goods_price,goods_brief,goods_item,goods_matters,goods_desc FROM tj_goods  where type = '.$type.' ORDER BY RAND() LIMIT 10' ;
+            $arr = Db::query($sql);
+            foreach ($arr as $k => &$v) {
+                $v['img'] = explode('--', $v['img']);
+                $v['goods_item'] = explode('--', $v['goods_item']);
+                $v['goods_matters'] = explode('--', $v['goods_matters']);
+            }
+            return toJson('200','查询成功', $arr);
+        } catch (\Exception $e) {
+            $data = $e->getMessage();
+            return toJson('500', '查询失败', $data);
+        }
+
+    }
+
 }
