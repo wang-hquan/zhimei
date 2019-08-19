@@ -45,4 +45,15 @@ class News extends Controller
             return toJson('500', '查询失败', $data);
         }
     }
+
+    public function news()
+    {
+        $news_id = $this->request->param('news_id');
+        $data =    Db::table('news')->where('id',$news_id)->find();
+        if($data){
+            return toJson('200','查询成功',$data);
+        }else{
+            return toJson('500','此新闻不存在');
+        }
+    }
 }

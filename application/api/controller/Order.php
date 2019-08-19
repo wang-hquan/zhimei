@@ -13,35 +13,38 @@ class Order extends Base
     {
         Db::startTrans();
         try{
-
             if(!$token = $this->request->header('token')){return toJson( '500','请登录');}
-
-            $post =   $this->request->param('id');
-            if($post == ''){return toJson( '500','请选择商品');}
+            $user_id = Db::table('user')->where('token',$token)->value('id');
+            $goods_id =   $this->request->param('id');
+            $num =   $this->request->param('num');
+            $member = $this->request->param('member');
+            if($goods_id == ''){return toJson( '500','请选择商品');}
             //生成订单号
             $order_sn = date('Ymd') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
-            $money = 0;
 
-
-            foreach ($post as $k => $v){
-                $goods =   Db::table('tj_goods')->where('id',$v['id'])->find();
-                $money = $goods['goods_price'] * $v['num'] +$money;
-            }
+            //获取总金额
+            $goods =   Db::table('tj_goods')->where('id',$goods_id)->find();
+            $money = $goods['goods_price'] *$num;
 
             $order_data =[
-                'order_sn' =>123
+                'user_id' =>$user_id,
+                'order_sn' =>$order_sn,
+                'order_status'=>0,
+                'goods_id' => $goods['id'],
+                'goods_name' => $goods['goods_name'],
+                'goods_img' => explode('--',$goods['img'])[0],
+                'goods_item' => $goods['goods_item'],
+                'goods_price' => $goods['goods_price'],
+                'goods_num' => $num,
+                'pay_fee' => $money,
+                'address' => $member,
+                'create_time' =>date('Y-m-d H:i:s',time())
             ];
-
-            $result_id = Db::name('orders')->insertGetId($order_data);
-            $order_goods['order_id'] = $result_id;
-            if ($post['buy_status'] == 1){
-                Db::name('orders')->where('order_id',$result_id)->setField('main_oid',$result_id);
-            }
-            $result = Db::name('order_goods')->insert($order_goods);
-
-
+            $id =   Db::name('tj_order')->insertGetId($order_data);
             Db::commit();
-            $user_id = Db::table('user')->where('token', $token)->value('id');
+            $data = Db::table('tj_order')->where('id',$id)->find();
+            return toJson('200', '生成订单成功', $data);
+
         }catch (\Exception $e) {
             $data = $e->getMessage();
             Db::rollback();
