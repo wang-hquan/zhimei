@@ -70,5 +70,5 @@ function toJson($code,$msg,$data='') {
         'data' =>$data,
         'msg' =>$msg
     ];
-    return  json_encode($param,JSON_UNESCAPED_UNICODE);
+    echo  json_encode($param,JSON_UNESCAPED_UNICODE);
 }

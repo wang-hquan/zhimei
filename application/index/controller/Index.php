@@ -1,11 +1,14 @@
 <?php
 namespace app\index\controller;
 
-class Index
+use app\index\model\IndexModel;
+use think\Controller;
+
+class Index extends Controller
 {
     public function index()
     {
-
+        $data =    new IndexModel();
+        $data->diySelect();
     }
-
 }

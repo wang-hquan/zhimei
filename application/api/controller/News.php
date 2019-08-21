@@ -27,11 +27,12 @@ class News extends Controller
         }
     }
 
-    //查询doctor列表
+    //查询新闻列表
     public function news_list()
     {
         try {
             $post = $this->request->param();
+
             $page = $post['page'];
             $length = $post['length'];
             $goods_arr = Db::table('news')
