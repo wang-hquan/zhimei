@@ -15,7 +15,7 @@ class TjCategoryModel extends BaseModel
             foreach ( $where as $k => $v ) {
                 switch ( $k ) {
                     case 'id':
-                        $result[$k] = ['=', $v];
+                        $result[] = [$k,'=', $v];
                         break;
                 }
             }

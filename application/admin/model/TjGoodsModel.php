@@ -15,10 +15,13 @@ class TjGoodsModel extends BaseModel
             foreach ( $where as $k => $v ) {
                 switch ( $k ) {
                     case 'id':
-                        $result[$k] = ['=', $v];
+                        $result[] = [$k,'=', $v];
                         break;
                     case 'type':
-                        $result[$k] = ['=', $v];
+                        $result[] = [$k,'=', $v];
+                        break;
+                    case 'is_tuijian':
+                        $result[] = [$k,'=', $v];
                         break;
                 }
             }

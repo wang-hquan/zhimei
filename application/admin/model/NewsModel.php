@@ -13,10 +13,10 @@ class NewsModel extends BaseModel
             foreach ( $where as $k => $v ) {
                 switch ( $k ) {
                     case 'id':
-                        $result[$k] = ['=', $v];
+                        $result[] = [$k,'=', $v];
                         break;
-                    case 'type':
-                        $result[$k] = ['=', $v];
+                    case 'status':
+                        $result[] = [$k,'=', $v];
                         break;
                 }
             }

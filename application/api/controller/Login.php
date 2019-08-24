@@ -24,6 +24,10 @@ class Login extends Controller
 
             $user = Db::table('user')->where('mobile', $post['mobile'])->find();
             if ($user) {
+                if($user['status'] !=1){
+                    return toJson('500',  '禁止登陆');
+                }
+
                 if (md5($post['password']) == $user['password']) {
                     //生成更新token
                     $token = md5($user['user_name'].$user['mobile'].time());
@@ -47,9 +51,9 @@ class Login extends Controller
     public function code()
     {
         try {
-            $moblie = $this->request->param('mobile');
+            $mobile = $this->request->param('mobile');
 
-            if(!preg_match('/^1([0-9]{9})/',$moblie)) {
+            if(!preg_match('/^1([0-9]{9})/',$mobile)) {
                 return   toJson('500', '请输入有效账号');
             }
 
@@ -57,10 +61,10 @@ class Login extends Controller
             $code = [
                 'code' => rand(1000, 9999)
             ];
-            $param = ['mobile' => $moblie, 'code' => $code['code']];
-            $user_data = Db::table('user')->where('mobile',$moblie)->find();
+            $param = ['mobile' => $mobile, 'code' => $code['code']];
+            $user_data = Db::table('user')->where('mobile',$mobile)->find();
             if($user_data){
-                Db::table('user')->where('mobile',$moblie) ->update($param);
+                Db::table('user')->where('mobile',$mobile) ->update($param);
             }else{
                 Db::table('user')->insert($param);
             }
@@ -115,4 +119,5 @@ class Login extends Controller
             return   toJson('500', '注册失败',$data );
         }
     }
+
 }

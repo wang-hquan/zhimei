@@ -6,7 +6,7 @@ use app\admin\library\BaseController;
 use app\admin\model\NewsModel;
 class News extends BaseController
 {
-    public $searchFields = ['id','desc'];
+    public $searchFields = ['id'];
     public $NewsModes = [];
 
     public function initialize()

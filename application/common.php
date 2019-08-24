@@ -9,6 +9,8 @@
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 require_once '../extend/alisms/vendor/autoload.php';
+include ('../extend/PHPExcel.php');
+
 // 应用公共文件
 use Aliyun\Core\Config;
 use Aliyun\Core\Profile\DefaultProfile;
@@ -71,4 +73,5 @@ function toJson($code,$msg,$data='') {
         'msg' =>$msg
     ];
     echo  json_encode($param,JSON_UNESCAPED_UNICODE);
+    exit;
 }
